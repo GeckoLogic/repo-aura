@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: repo-aura
+    runtime: python
+    buildCommand: pip install -e .
+    startCommand: streamlit run repo-aura/dashboard.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_USERNAME
+        sync: false
+      - key: EXCLUDED_REPOS
+        sync: false
+      - key: HIDDEN_REPOS
+        sync: false
+      - key: DASHBOARD_PASSWORD
+        sync: false
+
+  - type: cron
+    name: repo-aura-collector
+    runtime: python
+    schedule: "0 */6 * * *"
+    buildCommand: pip install -e .
+    startCommand: python -m repo-aura.collector
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_USERNAME
+        sync: false
+      - key: EXCLUDED_REPOS
+        sync: false
