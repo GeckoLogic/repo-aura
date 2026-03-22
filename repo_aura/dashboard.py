@@ -39,7 +39,7 @@ st.markdown(
     <style>
     html, body, [data-testid="stAppViewContainer"] {
         background-color: #0d0d0d;
-        color: #e0e0e0;
+        color: #999999;
     }
     [data-testid="stSidebar"] {
         background-color: #111111;
@@ -80,7 +80,7 @@ st.markdown(
         fill: #cccccc !important;
     }
     [data-testid="stMultiSelect"] [data-baseweb="select"] input {
-        color: #e0e0e0 !important;
+        color: #999999 !important;
     }
     </style>
     """,
@@ -90,7 +90,7 @@ st.markdown(
 PLOTLY_LAYOUT = dict(
     paper_bgcolor="#0d0d0d",
     plot_bgcolor="#111111",
-    font=dict(color="#e8e8e8"),
+    font=dict(color="#999999"),
     xaxis=dict(gridcolor="#1e1e1e", zerolinecolor="#1e1e1e", tickformat="%b %d"),
     yaxis=dict(gridcolor="#1e1e1e", zerolinecolor="#1e1e1e"),
     legend=dict(bgcolor="rgba(0,0,0,0)", borderwidth=0, font=dict(color="#555555", size=13)),
@@ -136,7 +136,7 @@ if not check_password():
 # ---------------------------------------------------------------------------
 
 st.sidebar.markdown(
-    '<h2 style="color:#ffffff; text-shadow: 0 0 12px #00f5ff, 0 0 24px #00f5ff88; letter-spacing: 2px;">Repo Aura</h2>',
+    '<h2 style="color:#999999; text-shadow: 0 0 12px #00f5ff, 0 0 24px #00f5ff88; letter-spacing: 2px;">Repo Aura</h2>',
     unsafe_allow_html=True,
 )
 
