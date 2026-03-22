@@ -1,6 +1,6 @@
 # Repo Aura
 
-Monitor your GitHub repo traffic stats over time. Repo Aura collects and stores data continuously, then presents it as an interactive dashboard with visualized charts for views, clones, commits, referrers, and more. Deploy it to Render and Supabase (both free tier) to access your data from anywhere.
+Monitor your GitHub repo traffic stats over time. Repo Aura collects and stores data continuously, then presents it as an interactive dashboard with visualized charts for views, clones, commits, referrers, and more. Deploy it to Streamlit Community Cloud and Supabase (both free, no credit card required) to access your data from anywhere.
 
 ## Background
 
@@ -15,7 +15,7 @@ Repo Aura uses the GitHub API to pull traffic and activity data on a schedule, s
 ## Architecture
 
 - **Streamlit dashboard** — dark/neon UI with charts for views, clones, commits, issues, PRs, referrers, and contributors
-- **Render Cron Job** — runs the collector every 6 hours
+- **GitHub Actions scheduled workflow** — runs the collector every 6 hours
 - **Supabase PostgreSQL** — persistent storage for all historical data
 
 ## Prerequisites
@@ -23,7 +23,8 @@ Repo Aura uses the GitHub API to pull traffic and activity data on a schedule, s
 - Python 3.11+
 - A [Supabase](https://supabase.com) project (free tier)
 - A GitHub Personal Access Token with `repo` and `read:user` scopes
-- A [Render](https://render.com) account (free tier)
+- A [Streamlit Community Cloud](https://streamlit.io/cloud) account (free, no credit card)
+- A GitHub account (for Actions — free for public and private repos)
 
 ---
 
@@ -79,7 +80,7 @@ streamlit run repo_aura/dashboard.py
 
 ---
 
-## Deployment on Render
+## Deployment
 
 ### Step 1: Create a Supabase database
 
@@ -87,22 +88,39 @@ streamlit run repo_aura/dashboard.py
 2. From **Settings → Database**, copy the **Connection string** (URI format)
 3. Run `python scripts/init_db.py` locally (with `DATABASE_URL` set) to create the schema
 
-### Step 2: Deploy to Render
+### Step 2: Deploy the dashboard to Streamlit Community Cloud
 
 1. Push this repo to GitHub
-2. In Render, click **New → Blueprint** and connect your GitHub repo — Render will detect `render.yaml` and create both services automatically
-3. Set the following environment variables as secrets in Render for both services:
+2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub
+3. Click **New app**, select this repo, and set the main file path to `repo_aura/dashboard.py`
+4. Under **Advanced settings → Secrets**, add the following:
+
+```toml
+DATABASE_URL = "your-supabase-connection-string"
+GITHUB_TOKEN = "ghp_yourtoken"
+GITHUB_USERNAME = "yourusername"
+EXCLUDED_REPOS = "repo-to-skip,another-repo"
+HIDDEN_REPOS = "private-repo-hide-from-ui"
+DASHBOARD_PASSWORD = "yourpassword"
+```
+
+5. Click **Deploy** — Streamlit Cloud will install dependencies from `requirements.txt` automatically
+
+### Step 3: Set up the GitHub Actions collector
+
+1. In your GitHub repo, go to **Settings → Secrets and variables → Actions**
+2. Add the following repository secrets:
    - `DATABASE_URL` — your Supabase connection string
    - `GITHUB_TOKEN` — your GitHub PAT
    - `GITHUB_USERNAME` — your GitHub username
    - `EXCLUDED_REPOS` — comma-separated repo names to skip (optional)
-   - `HIDDEN_REPOS` — comma-separated repo names to hide from the UI (web service only)
-   - `DASHBOARD_PASSWORD` — dashboard password (web service only)
+3. The workflow at `.github/workflows/collect.yml` runs automatically every 6 hours
+4. To trigger a manual run: go to **Actions → Collect GitHub Stats → Run workflow**
 
-### Step 3: Verify
+### Step 4: Verify
 
-- Open the web service URL and log in
-- Check Render cron job logs after the first scheduled run (every 6 hours) to confirm data is being collected
+- Open the Streamlit Cloud app URL and log in
+- Check the **Actions** tab in your GitHub repo after the first scheduled run to confirm data is being collected
 
 ---
 
