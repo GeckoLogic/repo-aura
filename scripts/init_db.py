@@ -10,7 +10,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import psycopg2
-from repo_aura.config import DATABASE_URL
+from repoauraapp.config import DATABASE_URL
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS traffic_views (

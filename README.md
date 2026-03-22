@@ -36,7 +36,7 @@ Repo Aura uses the GitHub API to pull traffic and activity data on a schedule, s
 pip install -e ".[app]"
 ```
 
-This installs the `repo_aura` package (defined in `pyproject.toml`) in editable mode along with all dependencies, including the Streamlit dashboard extras. Using a virtual environment per project is recommended to avoid package namespace conflicts.
+This installs the `repoauraapp` package (defined in `pyproject.toml`) in editable mode along with all dependencies, including the Streamlit dashboard extras. Using a virtual environment per project is recommended to avoid package namespace conflicts.
 
 ### 2. Create a `.env` file
 
@@ -69,13 +69,13 @@ python scripts/init_db.py
 ### 4. Run the collector (populates initial data)
 
 ```bash
-python -m repo_aura.collector
+python -m repoauraapp.collector
 ```
 
 ### 5. Start the dashboard
 
 ```bash
-streamlit run repo_aura/dashboard.py
+streamlit run repoauraapp/dashboard.py
 ```
 
 ---
@@ -92,7 +92,7 @@ streamlit run repo_aura/dashboard.py
 
 1. Push this repo to GitHub
 2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub
-3. Click **New app**, select this repo, and set the main file path to `repo_aura/dashboard.py`
+3. Click **New app**, select this repo, and set the main file path to `repoauraapp/dashboard.py`
 4. Under **Advanced settings → Secrets**, add the following:
 
 ```toml

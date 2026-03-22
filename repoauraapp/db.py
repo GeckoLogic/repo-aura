@@ -2,7 +2,7 @@ import psycopg2
 import psycopg2.extras
 from contextlib import contextmanager
 from datetime import date, datetime
-from repo_aura.config import DATABASE_URL
+from repoauraapp.config import DATABASE_URL
 
 
 @contextmanager

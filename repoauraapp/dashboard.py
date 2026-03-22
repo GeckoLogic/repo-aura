@@ -8,7 +8,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import date, timedelta
-from repo_aura import config, db
+from repoauraapp import config, db
 
 # ---------------------------------------------------------------------------
 # Page config

@@ -27,4 +27,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_USERNAME: ${{ secrets.GH_USERNAME }}
           EXCLUDED_REPOS: ${{ secrets.EXCLUDED_REPOS }}
-        run: python -m repo_aura.collector
+        run: python -m repoauraapp.collector

@@ -1,12 +1,12 @@
 """
 Data collector — fetches GitHub stats and upserts them into the database.
-Run standalone:  python -m repo_aura.collector
+Run standalone:  python -m repoauraapp.collector
 """
 
 import logging
 from datetime import date, datetime, timezone
 from github import Auth, Github, GithubException
-from repo_aura import config, db
+from repoauraapp import config, db
 
 logging.basicConfig(
     level=logging.INFO,

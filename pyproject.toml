@@ -20,4 +20,4 @@ app = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["repo_aura"]
+packages = ["repoauraapp"]
