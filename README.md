@@ -97,9 +97,6 @@ streamlit run repo_aura/dashboard.py
 
 ```toml
 DATABASE_URL = "your-supabase-connection-string"
-GITHUB_TOKEN = "ghp_yourtoken"
-GITHUB_USERNAME = "yourusername"
-EXCLUDED_REPOS = "repo-to-skip,another-repo"
 HIDDEN_REPOS = "private-repo-hide-from-ui"
 DASHBOARD_PASSWORD = "yourpassword"
 ```
@@ -126,15 +123,14 @@ DASHBOARD_PASSWORD = "yourpassword"
 
 ## Environment Variables Reference
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | Supabase PostgreSQL connection string |
-| `GITHUB_TOKEN` | Yes | GitHub PAT with `repo` + `read:user` scopes |
-| `GITHUB_USERNAME` | Yes | GitHub username to enumerate repos |
-| `EXCLUDED_REPOS` | No | Comma-separated repos to skip during collection |
-| `HIDDEN_REPOS` | No | Comma-separated repos to hide from the dashboard |
-| `DASHBOARD_PASSWORD` | No | Password for the dashboard login gate |
-| `COLLECTION_INTERVAL_HOURS` | No | Collection frequency hint (default: 6) |
+| Variable | Required by | Description |
+|----------|-------------|-------------|
+| `DATABASE_URL` | Dashboard + Collector | Supabase PostgreSQL connection string |
+| `GITHUB_TOKEN` | Collector only | GitHub PAT with `repo` + `read:user` scopes |
+| `GITHUB_USERNAME` | Collector only | GitHub username to enumerate repos |
+| `EXCLUDED_REPOS` | Collector only | Comma-separated repos to skip during collection |
+| `HIDDEN_REPOS` | Dashboard only | Comma-separated repos to hide from the dashboard |
+| `DASHBOARD_PASSWORD` | Dashboard only | Password for the dashboard login gate |
 
 ---
 
