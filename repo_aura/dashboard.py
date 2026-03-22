@@ -71,13 +71,13 @@ st.markdown(
     }
     [data-testid="stMultiSelect"] [data-baseweb="tag"] span,
     [data-testid="stMultiSelect"] [data-baseweb="tag"] button {
-        color: #cccccc !important;
+        color: #aaaaaa !important;
     }
     [data-testid="stMultiSelect"] [data-baseweb="tag"] svg {
-        fill: #cccccc !important;
+        fill: #aaaaaa !important;
     }
     [data-testid="stMultiSelect"] [data-baseweb="select"] svg {
-        fill: #cccccc !important;
+        fill: #aaaaaa !important;
     }
     [data-testid="stMultiSelect"] [data-baseweb="select"] input {
         color: #999999 !important;
@@ -94,7 +94,7 @@ st.markdown(
     .stButton button,
     [data-baseweb="input"] input,
     [data-testid="stCaption"] {
-        color: #cccccc !important;
+        color: #aaaaaa !important;
     }
     </style>
     """,
@@ -105,9 +105,10 @@ PLOTLY_LAYOUT = dict(
     paper_bgcolor="#0d0d0d",
     plot_bgcolor="#111111",
     font=dict(color="#999999"),
+    title=dict(font=dict(color="#aaaaaa")),
     xaxis=dict(gridcolor="#1e1e1e", zerolinecolor="#1e1e1e", tickformat="%b %d"),
     yaxis=dict(gridcolor="#1e1e1e", zerolinecolor="#1e1e1e"),
-    legend=dict(bgcolor="rgba(0,0,0,0)", borderwidth=0, font=dict(color="#555555", size=13)),
+    legend=dict(bgcolor="rgba(0,0,0,0)", borderwidth=0, font=dict(color="#555555", size=13), title=dict(font=dict(color="#aaaaaa"))),
     margin=dict(t=40, b=40, l=40, r=20),
 )
 
@@ -338,13 +339,21 @@ with tab_commits:
         )
         st.plotly_chart(apply_theme(fig), width='stretch')
 
-        fig2 = px.line(
-            df, x="week_start", y=["additions", "deletions"], color="repo",
-            title="Lines over time",
-            labels={"week_start": "Week", "value": "Lines"},
+        fig_add = px.line(
+            df, x="week_start", y="additions", color="repo",
+            title="Lines added over time",
+            labels={"additions": "Lines Added", "week_start": "Week"},
             color_discrete_sequence=NEON_COLORS,
         )
-        st.plotly_chart(apply_theme(fig2), width='stretch')
+        st.plotly_chart(apply_theme(fig_add), width='stretch')
+
+        fig_del = px.line(
+            df, x="week_start", y="deletions", color="repo",
+            title="Lines removed over time",
+            labels={"deletions": "Lines Removed", "week_start": "Week"},
+            color_discrete_sequence=NEON_COLORS,
+        )
+        st.plotly_chart(apply_theme(fig_del), width='stretch')
 
         fig3 = px.bar(
             df, x="week_start", y=["additions", "deletions"], color="repo",
