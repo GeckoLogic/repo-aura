@@ -33,10 +33,10 @@ Repo Aura uses the GitHub API to pull traffic and activity data on a schedule, s
 ### 1. Install dependencies
 
 ```bash
-pip install -e .
+pip install -e ".[app]"
 ```
 
-This installs the `repo_aura` package (defined in `pyproject.toml`) in editable mode along with all dependencies. Using a virtual environment per project is recommended to avoid package namespace conflicts.
+This installs the `repo_aura` package (defined in `pyproject.toml`) in editable mode along with all dependencies, including the Streamlit dashboard extras. Using a virtual environment per project is recommended to avoid package namespace conflicts.
 
 ### 2. Create a `.env` file
 
@@ -101,7 +101,7 @@ HIDDEN_REPOS = "private-repo-hide-from-ui"
 DASHBOARD_PASSWORD = "yourpassword"
 ```
 
-5. Click **Deploy** — Streamlit Cloud will install dependencies from `requirements.txt` automatically
+5. Click **Deploy** — Streamlit Cloud will install dependencies from `pyproject.toml` automatically (including the `app` extras for Streamlit and Plotly)
 
 ### Step 3: Set up the GitHub Actions collector
 
