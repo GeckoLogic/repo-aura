@@ -6,11 +6,11 @@ Monitor your GitHub repo traffic stats over time. Repo Aura collects and stores 
 
 ### Problem
 
-GitHub only retains 2 weeks of traffic data. After that, it's gone — there's no way to see how a repo performed a month ago, let alone over the past year. Checking stats also requires logging into GitHub and navigating per-repo, with no way to compare across repos or view trends over time from outside GitHub.
+GitHub only retains 2 weeks of traffic data. After that, it's gone — there's no way to see how a repo performed a month ago, let alone over the past year. Checking stats also requires logging into GitHub and navigating per-repo, with no way to compare across repos or view trends over time.
 
 ### Solution
 
-Repo Aura uses the GitHub API to pull traffic and activity data on a schedule, storing it permanently in a PostgreSQL database. The collection runs as a cron job on Render, so your local machine never needs to be on. The dashboard is deployed as a web app (password-protected) so you can view and interact with your long-term stats from any device, anywhere.
+Repo Aura uses the GitHub API to pull traffic and activity data on a schedule, storing it permanently in a PostgreSQL database. The collection runs as a scheduled GitHub Actions workflow, so your local machine never needs to be on. The dashboard is deployed as a web app (password-protected) so you can view and interact with your long-term stats from any device, anywhere.
 
 ## Architecture
 
@@ -140,6 +140,7 @@ DASHBOARD_PASSWORD = "yourpassword"
 - **Clones tab** — daily clones and unique cloners over time
 - **Commits tab** — weekly commits, additions, and deletions
 - **Issues & PRs tab** — open/closed issues and open/merged PRs over time
+- **Stars tab** — cumulative star counts over time
 - **Referrers tab** — top referring sites (latest snapshot)
 - **Contributors tab** — commits per contributor (latest snapshot)
 
