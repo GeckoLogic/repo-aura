@@ -5,7 +5,7 @@ Run standalone:  python -m repo_aura.collector
 
 import logging
 from datetime import date, datetime, timezone
-from github import Github, GithubException
+from github import Auth, Github, GithubException
 from repo_aura import config, db
 
 logging.basicConfig(
@@ -136,7 +136,7 @@ def collect_repo(repo) -> None:
 def run() -> None:
     if not config.GITHUB_TOKEN or not config.GITHUB_USERNAME:
         raise RuntimeError("GITHUB_TOKEN and GITHUB_USERNAME must be set to run the collector.")
-    g = Github(config.GITHUB_TOKEN)
+    g = Github(auth=Auth.Token(config.GITHUB_TOKEN))
     user = g.get_user(config.GITHUB_USERNAME)
     repos = list(user.get_repos(type="owner"))
     log.info("Found %d repos for %s", len(repos), config.GITHUB_USERNAME)
