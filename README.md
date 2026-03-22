@@ -109,7 +109,7 @@ DASHBOARD_PASSWORD = "yourpassword"
 2. Add the following repository secrets:
    - `DATABASE_URL` — your Supabase connection string
    - `GH_TOKEN` — your GitHub PAT (`GITHUB_TOKEN` is reserved by GitHub Actions and cannot be used)
-   - `GITHUB_USERNAME` — your GitHub username
+   - `GH_USERNAME` — your GitHub username
    - `EXCLUDED_REPOS` — comma-separated repo names to skip (optional)
 3. The workflow at `.github/workflows/collect.yml` runs automatically every 6 hours
 4. To trigger a manual run: go to **Actions → Collect GitHub Stats → Run workflow**
@@ -127,7 +127,7 @@ DASHBOARD_PASSWORD = "yourpassword"
 |----------|-------------|-------------|
 | `DATABASE_URL` | Dashboard + Collector | Supabase PostgreSQL connection string |
 | `GH_TOKEN` | Collector only | GitHub PAT with `repo` + `read:user` scopes (`GITHUB_TOKEN` is reserved by GitHub Actions) |
-| `GITHUB_USERNAME` | Collector only | GitHub username to enumerate repos |
+| `GH_USERNAME` | Collector only | GitHub username to enumerate repos |
 | `EXCLUDED_REPOS` | Collector only | Comma-separated repos to skip during collection |
 | `HIDDEN_REPOS` | Dashboard only | Comma-separated repos to hide from the dashboard |
 | `DASHBOARD_PASSWORD` | Dashboard only | Password for the dashboard login gate |
