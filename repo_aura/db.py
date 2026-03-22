@@ -125,6 +125,18 @@ def upsert_contributors(repo: str, rows: list[dict]):
             )
 
 
+def upsert_star_stats(repo: str, snapshot_date: date, stars: int):
+    sql = """
+        INSERT INTO star_stats (repo, snapshot_date, stars)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (repo, snapshot_date) DO UPDATE
+            SET stars = EXCLUDED.stars
+    """
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, (repo, snapshot_date, stars))
+
+
 def upsert_issue_pr_stats(repo: str, snapshot_date: date, open_issues: int,
                            closed_issues: int, open_prs: int, merged_prs: int):
     sql = """
@@ -179,6 +191,16 @@ def get_commit_activity(repos: list[str], start: date, end: date) -> list[dict]:
         FROM commit_activity
         WHERE repo = ANY(%s) AND week_start BETWEEN %s AND %s
         ORDER BY week_start
+    """
+    return _fetchall_df(sql, (repos, start, end))
+
+
+def get_star_stats(repos: list[str], start: date, end: date) -> list[dict]:
+    sql = """
+        SELECT repo, snapshot_date, stars
+        FROM star_stats
+        WHERE repo = ANY(%s) AND snapshot_date BETWEEN %s AND %s
+        ORDER BY snapshot_date
     """
     return _fetchall_df(sql, (repos, start, end))
 

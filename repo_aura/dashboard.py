@@ -71,16 +71,30 @@ st.markdown(
     }
     [data-testid="stMultiSelect"] [data-baseweb="tag"] span,
     [data-testid="stMultiSelect"] [data-baseweb="tag"] button {
-        color: #ffffff !important;
+        color: #cccccc !important;
     }
     [data-testid="stMultiSelect"] [data-baseweb="tag"] svg {
-        fill: #ffffff !important;
+        fill: #cccccc !important;
     }
     [data-testid="stMultiSelect"] [data-baseweb="select"] svg {
         fill: #cccccc !important;
     }
     [data-testid="stMultiSelect"] [data-baseweb="select"] input {
         color: #999999 !important;
+    }
+    .block-container {
+        padding-top: 2.5rem !important;
+    }
+    /* Override Streamlit white text throughout */
+    [data-testid="stMetricValue"],
+    [data-testid="stMetricDelta"],
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stTextInput"] input,
+    [data-testid="stForm"] label,
+    .stButton button,
+    [data-baseweb="input"] input,
+    [data-testid="stCaption"] {
+        color: #cccccc !important;
     }
     </style>
     """,
@@ -219,8 +233,8 @@ def empty_chart(msg: str = "No data for selected period.") -> None:
 
 st.markdown("# Repo Aura")
 
-tab_traffic, tab_clones, tab_commits, tab_issues, tab_referrers, tab_contributors = st.tabs(
-    ["Traffic", "Clones", "Commits", "Issues & PRs", "Referrers", "Contributors"]
+tab_traffic, tab_clones, tab_commits, tab_issues, tab_stars, tab_referrers, tab_contributors = st.tabs(
+    ["Traffic", "Clones", "Commits", "Issues & PRs", "Stars", "Referrers", "Contributors"]
 )
 
 # ---------------------------------------------------------------------------
@@ -307,6 +321,14 @@ with tab_commits:
         col2.metric("Additions", int(df["additions"].sum()))
         col3.metric("Deletions", int(df["deletions"].sum()))
 
+        fig = px.line(
+            df, x="week_start", y="total_commits", color="repo",
+            title="Commits over time",
+            labels={"total_commits": "Commits", "week_start": "Week"},
+            color_discrete_sequence=NEON_COLORS,
+        )
+        st.plotly_chart(apply_theme(fig), width='stretch')
+
         fig = px.bar(
             df, x="week_start", y="total_commits", color="repo",
             title="Weekly commits",
@@ -316,14 +338,22 @@ with tab_commits:
         )
         st.plotly_chart(apply_theme(fig), width='stretch')
 
-        fig2 = px.bar(
+        fig2 = px.line(
+            df, x="week_start", y=["additions", "deletions"], color="repo",
+            title="Lines over time",
+            labels={"week_start": "Week", "value": "Lines"},
+            color_discrete_sequence=NEON_COLORS,
+        )
+        st.plotly_chart(apply_theme(fig2), width='stretch')
+
+        fig3 = px.bar(
             df, x="week_start", y=["additions", "deletions"], color="repo",
             title="Additions & Deletions per week",
             labels={"week_start": "Week", "value": "Lines"},
             color_discrete_sequence=NEON_COLORS,
             barmode="group",
         )
-        st.plotly_chart(apply_theme(fig2), width='stretch')
+        st.plotly_chart(apply_theme(fig3), width='stretch')
 
 # ---------------------------------------------------------------------------
 # Tab: Issues & PRs
@@ -360,6 +390,30 @@ with tab_issues:
             color_discrete_sequence=NEON_COLORS,
         )
         st.plotly_chart(apply_theme(fig2), width='stretch')
+
+# ---------------------------------------------------------------------------
+# Tab: Stars
+# ---------------------------------------------------------------------------
+
+with tab_stars:
+    st.markdown("### Stars")
+    data = db.get_star_stats(repos, start_date, end_date)
+    if not data:
+        empty_chart()
+    else:
+        df = pd.DataFrame(data)
+        df["snapshot_date"] = pd.to_datetime(df["snapshot_date"])
+
+        latest = df.sort_values("snapshot_date").groupby("repo").last().reset_index()
+        st.metric("Total Stars", int(latest["stars"].sum()))
+
+        fig = px.line(
+            df, x="snapshot_date", y="stars", color="repo",
+            title="Stars over time",
+            labels={"stars": "Stars", "snapshot_date": "Date"},
+            color_discrete_sequence=NEON_COLORS,
+        )
+        st.plotly_chart(apply_theme(fig), width='stretch')
 
 # ---------------------------------------------------------------------------
 # Tab: Referrers

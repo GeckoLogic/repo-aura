@@ -120,6 +120,13 @@ def collect_repo(repo) -> None:
     except GithubException as e:
         log.warning("  contributors failed: %s", e)
 
+    # --- Stars snapshot ---
+    try:
+        db.upsert_star_stats(name, date.today(), repo.stargazers_count)
+        log.info("  stars: %d", repo.stargazers_count)
+    except GithubException as e:
+        log.warning("  stars failed: %s", e)
+
     # --- Issues & PRs snapshot ---
     try:
         today = date.today()

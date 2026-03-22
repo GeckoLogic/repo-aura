@@ -79,6 +79,14 @@ CREATE TABLE IF NOT EXISTS issue_pr_stats (
     merged_prs INT,
     UNIQUE(repo, snapshot_date)
 );
+
+CREATE TABLE IF NOT EXISTS star_stats (
+    id SERIAL PRIMARY KEY,
+    repo TEXT NOT NULL,
+    snapshot_date DATE NOT NULL,
+    stars INT,
+    UNIQUE(repo, snapshot_date)
+);
 """
 
 if __name__ == "__main__":
