@@ -271,6 +271,31 @@ with tab_traffic:
         )
         st.plotly_chart(apply_theme(fig2), width='stretch')
 
+        df_sorted = df.sort_values("date")
+        df_sorted["cumulative_views"] = df_sorted.groupby("repo")["total_views"].cumsum()
+        df_sorted["cumulative_unique"] = df_sorted.groupby("repo")["unique_visitors"].cumsum()
+
+        fig3 = px.line(
+            df_sorted, x="date", y="cumulative_views", color="repo",
+            title="Cumulative views over time",
+            labels={"cumulative_views": "Cumulative Views", "date": "Date"},
+            color_discrete_sequence=NEON_COLORS,
+        )
+        st.plotly_chart(apply_theme(fig3), width='stretch')
+
+        fig4 = px.line(
+            df_sorted, x="date", y="cumulative_unique", color="repo",
+            title="Cumulative unique users over time",
+            labels={"cumulative_unique": "Cumulative Unique Users", "date": "Date"},
+            color_discrete_sequence=NEON_COLORS,
+        )
+        st.plotly_chart(apply_theme(fig4), width='stretch')
+        st.caption(
+            "Note: this sums each day's unique visitor count. The same person visiting on "
+            "multiple days is counted once per day, so the cumulative total may overcount "
+            "truly distinct individuals."
+        )
+
 # ---------------------------------------------------------------------------
 # Tab: Clones
 # ---------------------------------------------------------------------------
@@ -303,6 +328,31 @@ with tab_clones:
             color_discrete_sequence=NEON_COLORS,
         )
         st.plotly_chart(apply_theme(fig2), width='stretch')
+
+        df_sorted = df.sort_values("date")
+        df_sorted["cumulative_clones"] = df_sorted.groupby("repo")["total_clones"].cumsum()
+        df_sorted["cumulative_unique"] = df_sorted.groupby("repo")["unique_cloners"].cumsum()
+
+        fig3 = px.line(
+            df_sorted, x="date", y="cumulative_clones", color="repo",
+            title="Cumulative clones over time",
+            labels={"cumulative_clones": "Cumulative Clones", "date": "Date"},
+            color_discrete_sequence=NEON_COLORS,
+        )
+        st.plotly_chart(apply_theme(fig3), width='stretch')
+
+        fig4 = px.line(
+            df_sorted, x="date", y="cumulative_unique", color="repo",
+            title="Cumulative unique cloners over time",
+            labels={"cumulative_unique": "Cumulative Unique Cloners", "date": "Date"},
+            color_discrete_sequence=NEON_COLORS,
+        )
+        st.plotly_chart(apply_theme(fig4), width='stretch')
+        st.caption(
+            "Note: this sums each day's unique cloner count. The same person cloning on "
+            "multiple days is counted once per day, so the cumulative total may overcount "
+            "truly distinct individuals."
+        )
 
 # ---------------------------------------------------------------------------
 # Tab: Commits

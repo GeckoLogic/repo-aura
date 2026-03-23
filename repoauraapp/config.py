@@ -11,8 +11,8 @@ def _parse_list(value: str | None) -> list[str]:
 
 
 DATABASE_URL: str = os.environ["DATABASE_URL"]
-GITHUB_TOKEN: str | None = os.environ.get("GITHUB_TOKEN")
-GITHUB_USERNAME: str | None = os.environ.get("GITHUB_USERNAME")
+GITHUB_TOKEN: str | None = os.environ.get("GH_TOKEN")
+GITHUB_USERNAME: str | None = os.environ.get("GH_USERNAME")
 DASHBOARD_PASSWORD: str = os.environ.get("DASHBOARD_PASSWORD", "")
 
 EXCLUDED_REPOS: list[str] = _parse_list(os.environ.get("EXCLUDED_REPOS"))
